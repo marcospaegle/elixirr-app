@@ -22,3 +22,9 @@ The choice of this stack is based on affinity and experience. For the proposed c
 ## Considerations
 
 Several points of the application can be improved and should be refactored, I tried to deliver the best possible application in a short space of time.
+
+Errors can be better handled and instead of throwing them in the console, redirecting them to a log file for example. I left it on the console on purpose.
+
+In a real application, the user token must be stored in cookies. I didn't see the need to do this in this demonstration (be careful not to reload the page so as not to lose the current session).
+
+Any other point can be discussed. This is not a production-ready application, the intention here is to show that I know what I'm doing.
