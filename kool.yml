@@ -1,0 +1,21 @@
+scripts:
+  composer: kool exec backend composer
+  artisan: kool exec backend php artisan
+  phpunit: kool exec backend php ./vendor/bin/phpunit
+  npm: kool exec frontend npm
+  npx: kool exec frontend npx
+  setup:
+    - kool run before-start
+    - kool docker kooldev/node:20 npm --prefix ./frontend install
+    - kool start
+    - kool run composer install
+    - kool run artisan key:generate
+    - kool run artisan migrate:fresh --seed
+  reset:
+    - kool run composer install
+    - kool run npm install
+    - kool run artisan migrate:fresh --seed
+  before-start:
+    - cp .env.example .env
+    - cp ./backend/.env.example ./backend/.env
+  mysql: kool exec -e MYSQL_PWD=$DB_PASSWORD database mysql -u $DB_USERNAME $DB_DATABASE
