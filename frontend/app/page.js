@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [credentials, setCredentials] = useState({
-    email: "marcos.paegle@gmail.com",
-    password: "password",
+    email: "",
+    password: "",
   });
   const { signIn, isUserLogged, error } = useAuth();
   const router = useRouter();

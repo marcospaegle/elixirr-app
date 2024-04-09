@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 
 export default function TaskDetails({ params }) {
   const router = useRouter();
+  const [error, setError] = useState(false);
+
   const [task, setTask] = useState({
     title: "",
     description: "",
@@ -16,17 +18,33 @@ export default function TaskDetails({ params }) {
   });
 
   useEffect(() => {
-    axiosInstance.get(`/tasks/${params.slug}`).then((response) => {
-      setTask(response.data.data);
-    });
+    setError(false);
+    axiosInstance
+      .get(`/tasks/${params.slug}`)
+      .then((response) => {
+        setTask(response.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setError(true);
+      });
   }, []);
 
   const handleWithSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axiosInstance.patch(`/tasks/${params.slug}`, task);
+      const data = {};
+      for (const key in task) {
+        if (task[key] !== "") {
+          data[key] = task[key];
+        }
+      }
+
+      await axiosInstance.patch(`/tasks/${params.slug}`, data);
       router.replace("/");
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -93,6 +111,11 @@ export default function TaskDetails({ params }) {
           <button className="font-mono font-bold">[update]</button>
         </div>
       </form>
+      {error && (
+        <div className="font-mono font-semibold text-sm text-red-500 bg-red-100 p-2 rounded mb-4 mt-4">
+          Something goes wrong! try again...
+        </div>
+      )}
     </main>
   );
 }

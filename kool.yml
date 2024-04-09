@@ -16,6 +16,6 @@ scripts:
     - kool run npm install
     - kool run artisan migrate:fresh --seed
   before-start:
-    - cp .env.example .env
-    - cp ./backend/.env.example ./backend/.env
+    - kool docker kooldev/node:20 cp .env.example .env
+    - kool docker kooldev/node:20 cp ./backend/.env.example ./backend/.env
   mysql: kool exec -e MYSQL_PWD=$DB_PASSWORD database mysql -u $DB_USERNAME $DB_DATABASE

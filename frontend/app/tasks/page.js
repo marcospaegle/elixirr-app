@@ -8,11 +8,19 @@ import Header from "@/components/header";
 
 export default function Tasks() {
   const [tasks, setTasks] = useState([]);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    axiosInstance.get("/tasks").then((response) => {
-      setTasks(response.data.data);
-    });
+    setError(false);
+    axiosInstance
+      .get("/tasks")
+      .then((response) => {
+        setTasks(response.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setError(true);
+      });
   }, []);
 
   return (
@@ -33,6 +41,11 @@ export default function Tasks() {
           dueDate={t.due_date}
         />
       ))}
+      {error && (
+        <div className="font-mono font-semibold text-sm text-red-500 bg-red-100 p-2 rounded mb-4">
+          Something goes wrong! try again...
+        </div>
+      )}
     </main>
   );
 }
